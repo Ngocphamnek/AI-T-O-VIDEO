@@ -92,27 +92,46 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
         )
 
         # ── Đặt cookies Gemini ────────────────────────────────────────
-        cookies = [
-            {
-                "name": "__Secure-1PSID",
-                "value": psid,
-                "domain": ".google.com",
-                "path": "/",
-                "secure": True,
-                "httpOnly": True,
-                "sameSite": "None",
-            },
-        ]
-        if psidts:
-            cookies.append({
-                "name": "__Secure-1PSIDTS",
-                "value": psidts,
-                "domain": ".google.com",
-                "path": "/",
-                "secure": True,
-                "httpOnly": True,
-                "sameSite": "None",
-            })
+        from bot import store as _store
+
+        # Ưu tiên full cookie string (set qua /setcookie all ...)
+        full_cookie_str = _store.get_gemini_cookie_string()
+
+        def _secure_cookie(name: str, value: str) -> dict:
+            """Cookie mặc định cho domain .google.com với __Secure- prefix."""
+            return {
+                "name": name, "value": value,
+                "domain": ".google.com", "path": "/",
+                "secure": True, "httpOnly": True, "sameSite": "None",
+            }
+
+        if full_cookie_str:
+            # Parse chuỗi "key=value; key2=value2" từ browser
+            cookies = []
+            for part in full_cookie_str.split(";"):
+                part = part.strip()
+                if "=" not in part:
+                    continue
+                k, v = part.split("=", 1)
+                k = k.strip(); v = v.strip()
+                if not k or not v:
+                    continue
+                is_secure = k.startswith("__Secure-") or k.startswith("__Host-")
+                cookies.append({
+                    "name": k, "value": v,
+                    "domain": ".google.com", "path": "/",
+                    "secure": is_secure,
+                    "httpOnly": False,
+                    "sameSite": "None" if is_secure else "Lax",
+                })
+            logger.info(f"[PW] Dùng full cookie string: {len(cookies)} cookies")
+        else:
+            # Fallback: chỉ PSID + PSIDTS
+            cookies = [_secure_cookie("__Secure-1PSID", psid)]
+            if psidts:
+                cookies.append(_secure_cookie("__Secure-1PSIDTS", psidts))
+            logger.info("[PW] Dùng PSID/PSIDTS (chế độ cơ bản — video có thể không khả dụng)")
+
         await context.add_cookies(cookies)
 
         page = await context.new_page()
@@ -124,7 +143,14 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
                 return
             ct = response.headers.get("content-type", "")
             url = response.url
-            if ("video" in ct or url.endswith(".mp4") or "videoplayback" in url or "GeneratedVideo" in url):
+            is_video = (
+                "video" in ct
+                or url.endswith(".mp4")
+                or "videoplayback" in url
+                or "GeneratedVideo" in url
+                or ("contribution.usercontent.google.com" in url and "download" in url)
+            )
+            if is_video:
                 try:
                     body = await response.body()
                     if len(body) > 50_000:  # > 50 KB → likely real video
@@ -138,8 +164,8 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
 
         # ── Mở Gemini ─────────────────────────────────────────────────
         logger.info("[PW] Đang mở gemini.google.com...")
-        await page.goto("https://gemini.google.com/app", wait_until="domcontentloaded", timeout=30_000)
-        await asyncio.sleep(4)
+        await page.goto("https://gemini.google.com/app", wait_until="networkidle", timeout=30_000)
+        await asyncio.sleep(3)
 
         # Kiểm tra đã đăng nhập chưa
         url_now = page.url
@@ -149,43 +175,55 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
             await browser.close()
             return None
 
+        # Kiểm tra chế độ đăng nhập (guest vs full)
+        try:
+            mode_text = await page.locator("button[aria-label*='mode picker']").text_content(timeout=3000)
+            is_guest = mode_text and "Sign in" in mode_text
+            logger.info(f"[PW] Chế độ: {'GUEST (hạn chế)' if is_guest else 'ĐÃ ĐĂNG NHẬP'} — {mode_text!r}")
+            if is_guest and not full_cookie_str:
+                logger.warning("[PW] Đang ở GUEST mode. Video generation có thể không hoạt động. "
+                               "Dùng /setcookie all <full_cookie> để đăng nhập đầy đủ.")
+        except Exception:
+            is_guest = False
+
         # ── Tìm và kích hoạt Video mode ───────────────────────────────
         video_mode_activated = False
 
-        # Cách 1: Tìm nút "+" / "More" / "Attach" gần textarea
-        for selector in [
-            '[aria-label*="Add content"]',
-            '[aria-label*="Thêm nội dung"]',
-            '[data-test-id="attachment-button"]',
-            'button[aria-label*="plus"]',
-            '.add-content-button',
-            'mat-icon-button[mattooltip*="video" i]',
-        ]:
-            try:
-                btn = page.locator(selector).first
-                if await btn.is_visible(timeout=2000):
-                    await btn.click()
-                    await asyncio.sleep(1)
-                    logger.info(f"[PW] Clicked: {selector}")
-                    video_mode_activated = True
-                    break
-            except Exception:
-                pass
+        # Nút "Upload & tools" — selector đã xác nhận từ debug
+        try:
+            tools_btn = page.locator("button[aria-label='Upload & tools']")
+            if await tools_btn.is_visible(timeout=3000):
+                await tools_btn.click()
+                await asyncio.sleep(1.5)
+                logger.info("[PW] Clicked 'Upload & tools'")
 
-        if video_mode_activated:
-            # Tìm option "Video" trong menu vừa mở
-            for sel in ['text="Video"', 'text="Create video"', '[aria-label*="video" i]', 'li:has-text("video")']:
-                try:
-                    opt = page.locator(sel).first
-                    if await opt.is_visible(timeout=2000):
-                        await opt.click()
-                        await asyncio.sleep(1)
-                        logger.info(f"[PW] Chọn Video mode: {sel}")
-                        break
-                except Exception:
-                    pass
-        else:
-            logger.info("[PW] Không tìm thấy nút video mode — gửi prompt text trực tiếp")
+                # Tìm option "Create video" hoặc "Video" trong menu
+                for sel, label in [
+                    ("button:has-text('Create video')", "Create video"),
+                    ("button:has-text('Video')", "Video"),
+                    ("[aria-label*='video' i]", "aria-video"),
+                    ("button:has-text('Tạo video')", "Tạo video"),
+                ]:
+                    try:
+                        opt = page.locator(sel).first
+                        if await opt.is_visible(timeout=1500):
+                            await opt.click()
+                            await asyncio.sleep(1)
+                            video_mode_activated = True
+                            logger.info(f"[PW] Video mode activated via: {label}")
+                            break
+                    except Exception:
+                        pass
+
+                if not video_mode_activated:
+                    # Đóng menu nếu không tìm thấy video option
+                    await page.keyboard.press("Escape")
+                    logger.info("[PW] Không có 'Create video' trong menu — guest mode? Thử prompt text trực tiếp")
+        except Exception as e:
+            logger.debug(f"[PW] Upload & tools error: {e}")
+
+        if not video_mode_activated:
+            logger.info("[PW] Gửi prompt text trực tiếp (không có video mode)")
 
         # ── Nhập prompt ───────────────────────────────────────────────
         input_sel = None

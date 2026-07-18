@@ -226,25 +226,23 @@ async def setcookie_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("⛔ Chỉ admin mới được dùng lệnh này.")
         return
 
-    args = context.args  # /setcookie PSID [PSIDTS]
+    args = context.args  # /setcookie PSID [PSIDTS]  hoặc  /setcookie all <full_string>
     if not args:
         await update.message.reply_text(
-            "📋 *Cách lấy Gemini cookies:*\n\n"
-            "1\\. Mở [gemini\\.google\\.com](https://gemini.google.com) trên trình duyệt\n"
-            "2\\. Nhấn F12 → Application → Cookies → `https://gemini.google.com`\n"
-            "3\\. Copy giá trị `__Secure-1PSID` và `__Secure-1PSIDTS`\n\n"
-            "*Cú pháp:*\n"
+            "📋 *Cách cập nhật Gemini cookies:*\n\n"
+            "*Cách 1 — Full cookies \\(khuyến nghị để dùng tính năng video\\):*\n"
+            "1\\. Mở [gemini\\.google\\.com](https://gemini.google.com) và đăng nhập\n"
+            "2\\. Nhấn F12 → Console, dán lệnh:\n"
+            "`copy\\(document\\.cookie\\)`\n"
+            "3\\. Paste chuỗi vừa copy:\n"
+            "`/setcookie all <chuỗi cookie>`\n\n"
+            "*Cách 2 — Chỉ PSID/PSIDTS \\(tính năng chat/ảnh cơ bản\\):*\n"
             "`/setcookie <PSID> <PSIDTS>`\n\n"
-            "Ví dụ:\n"
-            "`/setcookie abcXYZ123... defGHI456...`\n\n"
             "⚠️ Tin nhắn chứa cookie sẽ bị xóa ngay sau khi đọc\\.",
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_web_page_preview=True,
         )
         return
-
-    psid = args[0].strip()
-    psidts = args[1].strip() if len(args) > 1 else ""
 
     # Xóa tin nhắn ngay để bảo mật
     try:
@@ -252,21 +250,45 @@ async def setcookie_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception:
         pass
 
-    store.set_gemini_cookies(psid, psidts)
+    # Phân biệt hai cú pháp
+    if args[0].strip().lower() == "all":
+        # /setcookie all <full_cookie_string>
+        cookie_string = " ".join(args[1:]).strip()
+        if not cookie_string:
+            await update.effective_chat.send_message("❌ Thiếu chuỗi cookie. Dùng: `/setcookie all <chuỗi>`")
+            return
+        store.set_gemini_cookie_string(cookie_string)
+        # Cũng trích PSID/PSIDTS từ chuỗi để dùng cho gemini-webapi
+        for part in cookie_string.split(";"):
+            part = part.strip()
+            if "=" in part:
+                k, v = part.split("=", 1)
+                k = k.strip(); v = v.strip()
+                if k == "__Secure-1PSID":
+                    store.set_value("GEMINI_PSID", v)
+                elif k == "__Secure-1PSIDTS":
+                    store.set_value("GEMINI_PSIDTS", v)
+        mode = "full cookie string"
+    else:
+        # /setcookie PSID [PSIDTS]
+        psid = args[0].strip()
+        psidts = args[1].strip() if len(args) > 1 else ""
+        store.set_gemini_cookies(psid, psidts)
+        mode = "PSID/PSIDTS"
 
     # Reset Gemini client để dùng cookies mới
     processing = await update.effective_chat.send_message("🔄 Đang kết nối lại Gemini với cookies mới...")
     try:
         await gemini.reset_client()
         await processing.edit_text(
-            "✅ *Gemini cookies đã cập nhật thành công\\!*\n\n"
+            f"✅ *Gemini cookies đã cập nhật\\!* \\({_esc(mode)}\\)\n\n"
             "Client đã được kết nối lại\\. Thử chat ngay\\!",
             parse_mode=ParseMode.MARKDOWN_V2,
         )
     except Exception as e:
         await processing.edit_text(
-            f"⚠️ Cookies đã lưu nhưng kết nối thất bại:\n`{str(e)[:200]}`\n\n"
-            "Kiểm tra lại giá trị PSID/PSIDTS và thử lại\\.",
+            f"⚠️ Cookies đã lưu \\({_esc(mode)}\\) nhưng kết nối thất bại:\n`{str(e)[:200]}`\n\n"
+            "Kiểm tra lại cookie và thử lại\\.",
             parse_mode=ParseMode.MARKDOWN_V2,
         )
 

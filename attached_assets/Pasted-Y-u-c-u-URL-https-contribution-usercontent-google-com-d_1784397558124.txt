@@ -1,0 +1,123 @@
+Yêu cầu URL
+https://contribution.usercontent.google.com/download?c=CgxiYXJkX3N0b3JhZ2USUBINcmVzcG9uc2VfZGF0YRo_CjBmODJiY2Y1Y2JiNDVjOGI2MDAwNjU2ZTIxNjIyN2ViODA3Njc0MmZmMTQwZmNkOGQSCxIHEOCSmIyIFxgB&filename=video.mp4&opi=103135050
+Phương thức yêu cầu
+GET
+Mã trạng thái
+206 Partial Content
+Địa chỉ từ xa
+142.250.71.161:443
+Chính sách về người giới thiệu
+origin
+accept-ranges
+bytes
+access-control-allow-credentials
+true
+access-control-allow-origin
+https://gemini.google.com
+access-control-expose-headers
+Cache-Control, Content-Length, Date, Expires, Server, Transfer-Encoding, X-GUploader-UploadID, X-Google-Trace
+alt-svc
+h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+cache-control
+private, max-age=0
+content-disposition
+attachment; filename="video.mp4"
+content-length
+2128485
+content-range
+bytes 458752-2587236/2587237
+content-security-policy
+sandbox, default-src 'none', frame-ancestors 'none'
+content-security-policy
+sandbox allow-scripts
+content-type
+video/mp4
+cross-origin-embedder-policy
+require-corp
+cross-origin-opener-policy
+same-origin
+cross-origin-resource-policy
+same-site
+date
+Sat, 18 Jul 2026 17:57:52 GMT
+expires
+Sat, 18 Jul 2026 17:57:52 GMT
+server
+UploadServer
+vary
+Origin
+x-content-security-policy
+sandbox
+x-content-type-options
+nosniff
+x-guploader-uploadid
+AKhXX7KiSkqwu7A9SfOhxDmkijXOCMCB8dZGRhYPaLMntw9Nev6z6T6nCcWItzIZnIruErbF
+:authority
+contribution.usercontent.google.com
+:method
+GET
+:path
+/download?c=CgxiYXJkX3N0b3JhZ2USUBINcmVzcG9uc2VfZGF0YRo_CjBmODJiY2Y1Y2JiNDVjOGI2MDAwNjU2ZTIxNjIyN2ViODA3Njc0MmZmMTQwZmNkOGQSCxIHEOCSmIyIFxgB&filename=video.mp4&opi=103135050
+:scheme
+https
+accept
+*/*
+accept-encoding
+identity;q=1, *;q=0
+accept-language
+vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5
+cookie
+__Secure-BUCKET=CLIC; ADS_VISITOR_ID=00000000-0000-0000-0000-000000000000; GCL_AW_P=GCL.1784218977.EAIaIQobChMIiKmJ0s3XlQMVquQWBR2xSAnGEAAYASAAEgLPyfD_BwE; SEARCH_SAMESITE=CgQIrKEB; AEC=AdJVEauIPk154TW5kKlWm4ZNTE1An40mz0IV0BXdG-GOSSxWhd8-YcUTGUc; SID=g.a000AglgCYwMc0SgYfxTblb8paP5K9BBl3y_j46Ni4XGFxNfxfoJnMBvsuPbtmQ24Lx_bwC7vgACgYKAdASARYSFQHGX2MiI7Y_bLiPSoePzk89UgFObBoVAUF8yKqjgzvUKLpedn_rVmBVBQ-V0076; __Secure-1PSID=g.a000AglgCYwMc0SgYfxTblb8paP5K9BBl3y_j46Ni4XGFxNfxfoJhvvaNkY2IMFvh91-5cKcDQACgYKAeYSARYSFQHGX2Midxakzxg5CiFZ95H5qli60RoVAUF8yKoqhv6oXl6VvBpJR6BDqmv40076; __Secure-3PSID=g.a000AglgCYwMc0SgYfxTblb8paP5K9BBl3y_j46Ni4XGFxNfxfoJ658vKYK24wnGjUjxiNcLHgACgYKAdUSARYSFQHGX2MiBnoYK9SsLS-7n1hAsrwmZRoVAUF8yKoU2Tz6UPn0ZzQtc0BxXtca0076; HSID=AHKCAUBy6CyEDNgDv; SSID=Aj5Ihk4A4EoDSzU7e; APISID=YBkfoA61N8mKHrvJ/AFqBU_wekbM6T8sea; SAPISID=kjocFVowmpV6oVlc/A6fZK5-AP7thnaVMJ; __Secure-1PAPISID=kjocFVowmpV6oVlc/A6fZK5-AP7thnaVMJ; __Secure-3PAPISID=kjocFVowmpV6oVlc/A6fZK5-AP7thnaVMJ; __Secure-1PSIDTS=sidts-CjEBPWEu2cDnSYC6c0ga36kb_59E6qvbnMxF0Vw3s32rSfZM7hPY6v6EERX-yf5Hq0WEEAA; __Secure-3PSIDTS=sidts-CjEBPWEu2cDnSYC6c0ga36kb_59E6qvbnMxF0Vw3s32rSfZM7hPY6v6EERX-yf5Hq0WEEAA; NID=533=N2Qi8d8-nj5HuJfJ_76C2kRmD64PPlFP9U1SCi1R1zf4wIOmE5C9txy0p-pOJ5OUKgmOHwCwnuu81j6XyCQdq9CirVXOrJR-VYgSNYY9LY6KxQarX5HCpnuzIM181MX-S4EoLwtDEjG1nD0XGlOY6bfyQ1AEgIDmmV8YTyOKGcYJw_7nt12Y11b89IpCAlDHcLyHyJjhMLwqS4WekLFGl7hooEg5LkjPD5sSAg55z32q6KXkh4q6o_9E5nXsB2IXkk1Tq24Zfl7vcJPAN2aTWgReMy-UlMT8qO9OdNYlZXHxGqi-NDnMgbY7xKYAOE4I6xMzgEMOLlHtI5t3jfuLj0dXTZdPx_igLtOfuvkx7e2wj5YKELEZmHDnEI-toLlYkLEbyNOZlVkCkGiseeari7RkAolIw0nxQuYaOmgl5gyh7dVA4QTqu3liqr2WfaucTRb4x_Ag0b67uGYZeiJ1-DYzDQnJiepAbB9NTToTMazLIUn865It6rBhLd0gHB-Etp5AgdauQOoEQfnvXxWVhkINkY8X9i8zg36flCWUlOOxCyahZP3mwjWxg3RqMNJCfbtnK3sP71-BXo69KKTpUZ8pa2UpfB1X9dNFkrBZqAGtvGI6Yj1oTY1U0hClh12CZnp5zB8amxh_YT_5-8VnQOM5wtgz26oxZUfZWxi1Id_z8le7BkiGuuovveEhlbFy4EyI8BkTvj6XYFkz4mYayKdap552lW2uFedadC8R5JwoaSSGR8V2fuAZadHyjKX9HkYze3ocSAEMWseVuGlOu9gRXvHVHadIf0c66Ic4i4ojYgPsTE1vtzi9HS6bwFpzWBddspaB4M48NniOdFSTp1rYLeINMw60zdm9ImfxfZs7KHzyElU4je7oTwfJGC8AEkdEz3B8LkuAJ6Kzmd6_QpTMU70AxNLHbSDznQAWD8MGy7laWlw2HVBgtONk6dQ9FATkC3cMXdLfelmxOo9ehzHMflrBjtOwAowKThk0Maeo3vQT8BmJlEeVqwynbJxBq1_fv6WeW-SQ34r-jjF0Sqj5kKOLp4EPcawvbSBT5NlJ6ejRIxfvDeFscZ_BVD5PqLYnkqVQtlEqDA8LG05_Dkr9QDerlDx-7YSgbrHeTJYjLM5lXhcch4CK8ZkjGvGJj4yZD0MAQ9Lt9U5ZC8lWALCZ-37k5H7F3Pu3RZBG4NufKQbWWj0BXSRTOUCOQF9IHqxCA_MBYnpG5M6WZztaJah9BpLKTd2aWCvwdblEKA0wVFEjMQ1MRRx2YvD_Y3gdIdXOq5ogTKYKgtSmhufc6Sh7QmyHkucgcuJQNiaadAy4-Tk2u0sRxawKe8DE-owgsOZrd2F27qYl6j-fnXfZMLEF93bFEPta0jsOGPklf2czRfRh72juXRE6mlCBq2TOfPLfTokz3xWuO5aAg3GokRIjPygRL4Zj2jl6UcSh-hPqpmKyRWBpe0Jx0WGOXkyPkt5Lkd-fRgWDbblq1tR4yYQH-NF7XeioG9c-T8DX1ETAazB0brcJrGZ25NXmtiHUUPM9vtoO9ndt46qAyjOcbptsuNNJNL-8HTaq34gK2KhVLvmJMRf7dqLyrR1suO-cXyiqiEH7At4h56HiEj6j24h6gKEuj8jJ9D5B5eU_nDXm-GqmZIp3QYxKAB2oqpcs06WiIXJFBSefcRaTw6qde4R8UX8XixFma_eRWeNQnRGhcjJLXGniO6wZH9kL0iDfgMAX3LVqTA39UrKsWqWY6jj2PuIXTl8RKxyVmZLNgbGrc8qLSplkcZhhVBl4ZlKsRrQ6B2FsM5NRXSdcOjNebEkE1LDDWb4tyZtzkH958V7X167tamtVUreeG5D4jwskRhGNFwISWLzjlVp-JTiQl_3kLjngc_wOJT16CGI0WZgM-8l9AL-3ROhuk1GxbT2jRPGGyPx6SiYkvmACQ3qwO82Uzx2kXEbVeJekKuUeJaVEtekaq5bw96Y4ZASPJaFIp0AMhF-oTbGsCVsgBR_M2AYXXloDEtf3YTjDs4tY4Cjy9Fq0kLxPzpA2h7jhllvc0PiSTmaESHvi_UlEclQDSa52KRH4jE20qFX14QIKFX8on-6SUm-WVOJ0QF0J0prkKR6edgdTUopuVr5y_ZAUhb-q_dC53vXolveKZ9NBRuDGgQsqFg7HiEQ83-9CJMs_EDZwXtj2HAf51xW4hCLJFm69Xa0C02P_7vm0LogQ9iFY9HGsSQiMjgJVfsS9ixSqC4_dkaI3wQ-WM4hDvl3fFs8z3SMV_S-RLGPLDHoU9ep_dMvT2xIB0KE_HImJmIKBIG4nRNglDA3XXFW8yVVR2GyOKwq9FjP7ksx_EEFTtsWMxGMsun8qVf1qFXryFRqh7JfE8Z9kGT9E-Qqbm_i3k0S8sdjC3Q4Fy5gFsDN_inO_0FGlCioV7PV74VwBwqDKYEO6dVlyOdEu6MLZm8DcBpTNNZrhid27i9lHISnM2PgJA5fbeQ20rCT9vbh4QzJNOBSzrsgIjZ2JSO-BL92GV2EMfA-YhGINkZoUn2RffSrohZ0ge9X8ILyO6NLUxu1nsTo29yOTziJissJQRjffjuex01-93BCyq2h2lFQcbMdRLlE331hbW602Hps0ZFtTSoCWCrUOgjCLDvrXrVnlRvlxjlDoGodscS40WjFM00X1vHuG9Fs283He5kk-qp6HAsCZlWmiO-03IHuPbLnddwNDWNdsoPI2HaAeDgUfbHDbUVB-oSeIh9sNbl8xnxTS-O02WeJsnmVVBseTkZapqaIpQB-Ay47OB43yKpygA_2tllzjjr4XjzinHpTZqn6EtuNUZrQqNoG2dRyFOCpo436MONS1dtoiIOBFCVpL4onK9R898299CskAcEP4j-ewOv-OkyOxK-44EuQpw8Tv1b8PWW6raiEa98n0Mjm05ybHjxhpvw4lPS2dTkuVvGW6GGq5nVRwu13hyBBmD0MplkOgH12p75dMdMjAi8qO1PhE6akysLmReFHwzWmwETq4mOYAwZnd03naJZtVeBgR9TkzCXYjxzj4qP0EhuPx4sZ3x_wS27YITlluidk6VdsR6QfIC-46rn0WHXv45hiVZ9UQKxBxiehe7ipRjD4W1ez6L2b5_Dxh6ky9qnqUDPvYYrQ49gudxzepEsqn-HhX22Iu34VcO5kKKPM-bCTXfdco0lHDbSrdSEMgms_-8lXeC_COAVq1-V5cp6WTfjDPTSA3bcaPeZbpZd024j5iIKNDfaBXrnMjvYEfwDh18kMYQbXGN3WdazIsHsZovXfkSGXpxdOg4_coOfvYRZ5_iPCE8JcpYRbuJo0qfXVepZXnj35EUHxc2Wy0_PF3T_l3goEWeLhSsJq9Hpmn5v6W3kKMpJULWAMA1hTd9pfrJwk4wyXQ1m34qmxO2LfnoFRlwB8TOu4QuAFeYABYCT_09n-9Jw70GOAu1WCLO7beVt1WHlh0cqCletkRfr7vTSuRDHNq-RSht45_oGijncvaNeQWaU_I7WnC88OKG2RBaAa7ccPsZIPaoCN0il1esX9IbjuQkshPLDPy; SIDCC=AKEyXzV2Tu4qKdP_gNDGAJTdrvFLb8o9d53iOG6X8c66l0GCb55x84CMUkfr-tffdEUYBCjTUQ; __Secure-1PSIDCC=AKEyXzUxYwjQ8T54N-WxgYOBJ94d6axL9FHv75BFhsnoHaF1vDxRjw8Zemf6odDI0eCzFWarIg; __Secure-3PSIDCC=AKEyXzW91R_TL-5iMQ8zKoPFdv5R52i__QJ_4P_rXL7zLTeMMz5bHSMnLMzi98yIK0-aJuGjHS0
+origin
+https://gemini.google.com
+priority
+i
+range
+bytes=458752-
+referer
+https://gemini.google.com/
+sec-ch-ua
+"Not;A=Brand";v="8", "Chromium";v="150", "Google Chrome";v="150"
+sec-ch-ua-arch
+"arm"
+sec-ch-ua-bitness
+"64"
+sec-ch-ua-form-factors
+"Desktop"
+sec-ch-ua-full-version
+"150.0.7871.127"
+sec-ch-ua-full-version-list
+"Not;A=Brand";v="8.0.0.0", "Chromium";v="150.0.7871.127", "Google Chrome";v="150.0.7871.127"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-model
+""
+sec-ch-ua-platform
+"macOS"
+sec-ch-ua-platform-version
+"26.5.2"
+sec-ch-ua-wow64
+?0
+sec-fetch-dest
+video
+sec-fetch-mode
+cors
+sec-fetch-site
+same-site
+user-agent
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36
+x-browser-channel
+stable
+x-browser-copyright
+Copyright 2026 Google LLC. All Rights Reserved.
+x-browser-validation
+G3cicbTye7OcgopB7DSx7XtqpD8=
+x-browser-year
+2026
+x-client-data
+CKmdygEIk6HLAQiGoM0BCJHVlDAI89aUMAil15Qw
+Đã giải mã:
+message ClientVariations {
+  // Active Google-visible variation IDs on this client. These are reported for analysis, but do not directly affect any server-side behavior.
+  repeated int32 variation_id = [3313321, 3330195, 3362822, 101001873, 101002099, 101002149];
+}

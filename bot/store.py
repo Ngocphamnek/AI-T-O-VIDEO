@@ -54,6 +54,16 @@ def set_gemini_cookies(psid: str, psidts: str = ""):
         set_value("GEMINI_PSIDTS", psidts)
 
 
+def get_gemini_cookie_string() -> str:
+    """Trả về full cookie string (key=value; ...) cho Playwright nếu có."""
+    return get("GEMINI_COOKIE_STRING", "")
+
+
+def set_gemini_cookie_string(cookie_str: str):
+    """Lưu full cookie string từ browser (copy từ DevTools)."""
+    set_value("GEMINI_COOKIE_STRING", cookie_str)
+
+
 # ── YouTube cookies (Netscape format string) ───────────────────
 
 def get_youtube_cookies() -> str:
