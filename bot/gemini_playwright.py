@@ -10,46 +10,30 @@ from pathlib import Path
 from loguru import logger
 
 
-def _setup_playwright_lib_path() -> None:
+def _get_nix_chromium() -> str | None:
     """
-    Lấy đường dẫn thư viện hệ thống từ nix store cho Chromium headless shell.
-    Dùng nix-build để lấy store path chính xác, sau đó set LD_LIBRARY_PATH.
+    Lấy đường dẫn Chromium từ nixpkgs — đã build đúng cho NixOS, không cần
+    LD_LIBRARY_PATH thủ công.  Trả về path đến binary hoặc None nếu không tìm được.
     """
-    # Các nix packages cần thiết cho Chromium
-    nix_packages = [
-        "nspr", "nss", "glib", "atk", "at-spi2-atk", "at-spi2-core",
-        "dbus", "mesa", "expat", "libxkbcommon", "eudev", "alsa-lib",
-        "xorg.libX11", "xorg.libXcomposite", "xorg.libXdamage",
-        "xorg.libXext", "xorg.libXfixes", "xorg.libXrandr",
-        "xorg.libxcb", "pango", "cairo", "libdrm", "libGL",
-    ]
-
-    lib_dirs: list[str] = []
-    for pkg in nix_packages:
-        try:
-            result = subprocess.run(
-                ["nix-build", "<nixpkgs>", "-A", pkg, "--no-out-link"],
-                capture_output=True, text=True, timeout=30,
-            )
-            if result.returncode == 0:
-                store_path = result.stdout.strip()
-                lib_path = f"{store_path}/lib"
-                if os.path.isdir(lib_path):
-                    lib_dirs.append(lib_path)
-        except Exception:
-            pass
-
-    if lib_dirs:
-        existing = os.environ.get("LD_LIBRARY_PATH", "")
-        parts = lib_dirs + ([existing] if existing else [])
-        os.environ["LD_LIBRARY_PATH"] = ":".join(parts)
-        logger.info(f"[PW] LD_LIBRARY_PATH: {len(lib_dirs)} nix lib dirs configured")
-    else:
-        logger.warning("[PW] Không tìm thấy nix libs — Chromium có thể crash")
+    try:
+        result = subprocess.run(
+            ["nix-build", "<nixpkgs>", "-A", "chromium", "--no-out-link"],
+            capture_output=True, text=True, timeout=120,
+        )
+        if result.returncode == 0:
+            store_path = result.stdout.strip()
+            binary = f"{store_path}/bin/chromium"
+            if os.path.isfile(binary):
+                logger.info(f"[PW] Dùng nixpkgs Chromium: {binary}")
+                return binary
+    except Exception as e:
+        logger.debug(f"[PW] nix-build chromium thất bại: {e}")
+    logger.warning("[PW] Không tìm được nixpkgs Chromium — dùng Playwright mặc định")
+    return None
 
 
-# Chạy một lần khi module được import
-_setup_playwright_lib_path()
+# Cache chromium path tại import time (chạy một lần)
+_NIX_CHROMIUM: str | None = _get_nix_chromium()
 
 
 async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360) -> bytes | None:
@@ -74,7 +58,7 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
     video_url: str | None = None
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(
+        launch_kwargs: dict = dict(
             headless=True,
             args=[
                 "--no-sandbox",
@@ -95,6 +79,9 @@ async def generate_video(topic: str, psid: str, psidts: str, timeout: int = 360)
                 "--memory-pressure-off",
             ],
         )
+        if _NIX_CHROMIUM:
+            launch_kwargs["executable_path"] = _NIX_CHROMIUM
+        browser = await p.chromium.launch(**launch_kwargs)
         context = await browser.new_context(
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
