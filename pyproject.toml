@@ -1,0 +1,18 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Gemini Telegram Bot - AI Text to Video"
+requires-python = ">=3.11"
+dependencies = [
+    "python-telegram-bot>=21.0",
+    "gemini-webapi>=1.5.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "loguru>=0.7.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-auth>=2.28.0",
+    "requests>=2.31.0",
+    "httpx>=0.27.0",
+    "aiofiles>=23.0.0",
+    "google-api-python-client>=2.120.0",
+]
