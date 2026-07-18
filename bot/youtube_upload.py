@@ -16,12 +16,21 @@ def _build_youtube(chat_id: int):
     if not creds_data:
         raise RuntimeError("Chưa đăng nhập YouTube — dùng /login để xác thực Google trước.")
 
+    # client_id/secret ưu tiên lấy từ creds dict (self-contained), fallback về store
+    client_id = creds_data.get("client_id") or store.get_google_client_id() or None
+    client_secret = creds_data.get("client_secret") or store.get_google_client_secret() or None
+
+    if not client_id or not client_secret:
+        raise RuntimeError(
+            "Thiếu Google OAuth credentials. Vào /login → nhập Client ID & Secret rồi đăng nhập lại."
+        )
+
     creds = Credentials(
         token=creds_data.get("token"),
-        refresh_token=creds_data.get("refresh_token"),
-        token_uri=creds_data.get("token_uri", "https://oauth2.googleapis.com/token"),
-        client_id=store.get_google_client_id(),
-        client_secret=store.get_google_client_secret(),
+        refresh_token=creds_data.get("refresh_token") or None,
+        token_uri=creds_data.get("token_uri") or "https://oauth2.googleapis.com/token",
+        client_id=client_id,
+        client_secret=client_secret,
         scopes=creds_data.get("scopes"),
     )
     return build("youtube", "v3", credentials=creds)

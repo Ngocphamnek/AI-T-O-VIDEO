@@ -54,7 +54,8 @@ def get_auth_url(chat_id: int) -> tuple[str, str]:
     auth_url, _ = flow.authorization_url(
         access_type="offline",
         state=state,
-        prompt="select_account",
+        prompt="consent",          # buộc Google trả về refresh_token mỗi lần
+        include_granted_scopes="true",
     )
     # Lưu cả flow để giữ code_verifier (PKCE)
     _pending_states[state] = (chat_id, flow)
@@ -114,7 +115,9 @@ async def handle_callback(code: str, state: str) -> Optional[dict]:
         _store.set_google_credentials(chat_id, {
             "token": credentials.token,
             "refresh_token": credentials.refresh_token,
-            "token_uri": credentials.token_uri,
+            "token_uri": credentials.token_uri or "https://oauth2.googleapis.com/token",
+            "client_id": credentials.client_id or _store.get_google_client_id(),
+            "client_secret": credentials.client_secret or _store.get_google_client_secret(),
             "scopes": list(credentials.scopes or OAUTH_SCOPES),
         })
 
